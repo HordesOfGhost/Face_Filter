@@ -1,0 +1,5 @@
+##python -V = 3.6.13
+flask
+opencv-python
+cmake
+dlib
