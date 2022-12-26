@@ -22,10 +22,13 @@ def video():
 @app.route('/',methods=['POST'])
 def filter():
     if request.method == 'POST':
-        for upload in request.files.getlist("glass"):
+        for upload in request.files.getlist("glass") and request.files.getlist("glass"):
             glass_array=np.array(bytearray(upload.read()),dtype=np.uint8)
+        for upload in request.files.getlist("moustache"):
+            moustache_array=np.array(bytearray(upload.read()),dtype=np.uint8)
         glass=preprocess(glass_array)
-        return Response(filtered_video(Capture(),glass),mimetype='multipart/x-mixed-replace;boundary=frame')
+        moustache=preprocess(moustache_array)
+        return Response(filtered_video(Capture(),glass=glass,moustache=moustache),mimetype='multipart/x-mixed-replace;boundary=frame')
     return 'not submitted'   
 
 
