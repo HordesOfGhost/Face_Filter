@@ -3,10 +3,15 @@
     <body>
         <h1>Filters</h1>
         <div>
-            <img src="{{url_for('video')}}" width="50%"/>
+            <center>
+                <img src="{{url_for('video')}}" width="50%"/>
+            </center>
         </div>
         <div>
-            
+            <form method='POST' onsubmit=submit()>
+                <input type="file" name="glass" />
+                <input type="submit" />
+            </form>
         </div>
     </body>
 </html>
