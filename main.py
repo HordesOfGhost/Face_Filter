@@ -1,10 +1,15 @@
 from flask import Flask,render_template,Response,request
-#from flask_wtf import FlaskForm
 from backend.record import Capture,generate_video,filtered_video
-from backend.filter_camera import filter_camera
+from backend.process import preprocess
+import numpy as np
+import cv2
+from PIL import Image
 
 app=Flask(__name__)
-            
+
+
+app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -17,8 +22,10 @@ def video():
 @app.route('/',methods=['POST'])
 def filter():
     if request.method == 'POST':
-        txt=str(request.form['glass'])
-        return Response(filtered_video(Capture()),mimetype='multipart/x-mixed-replace;boundary=frame')
+        for upload in request.files.getlist("glass"):
+            glass_array=np.array(bytearray(upload.read()),dtype=np.uint8)
+        glass=preprocess(glass_array)
+        return Response(filtered_video(Capture(),glass),mimetype='multipart/x-mixed-replace;boundary=frame')
     return 'not submitted'   
 
 

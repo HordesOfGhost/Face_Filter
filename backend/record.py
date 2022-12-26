@@ -31,9 +31,10 @@ class Capture():
         ret,jpg=cv2.imencode('.jpg',frame)
         return jpg.tobytes()
     
-    def filter(self):
+    def filter(self,glass):
         #for computation handling
         ret,frame= self.video.read()
+        frame=cv2.resize(frame,(1280,720))
         frame=cv2.flip(frame,180)
         gray=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
         faces=self.face_detecter(gray,0)
@@ -57,7 +58,7 @@ class Capture():
             dist_y1 = down1-up1
             if left1<=1280 and left1>=0 and right1>=0 and right1<1280 and up1<=720 and down1<=720 and up1>=0 and down1>=0:
                 #reading and resizing
-                glass=cv2.imread(f'{self.path}/images/glass.jpg')
+                #glass=cv2.imread(glass)
                 glass=cv2.resize(glass,(dist_x1,dist_y1))
                     
                 #setting Glass frame
@@ -97,9 +98,9 @@ def generate_video(camera):
         yield(b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n'+frame+b'\r\n')
 
-def filtered_video(camera):
+def filtered_video(camera,glass):
     while True:
-        frame=camera.filter()
+        frame=camera.filter(glass=glass)
         
         yield(b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n'+frame+b'\r\n')
