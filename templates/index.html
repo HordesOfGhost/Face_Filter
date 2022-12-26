@@ -1,19 +1,20 @@
 <!DOCTYPE html>
+
 <html>
     <body>
-        <h1>Filters</h1>
+        <center><h1>Filters</h1></center>
         <div>
             <center>
-                <img src="{{url_for('video')}}" width="50%"/>
+                <img src="{{url_for('video')}}" width="35%"/>
             </center>
         </div>
         <div>
             <form method='POST' onsubmit=submit() enctype="multipart/form-data">
-                <input type="file" name="glass" />
-                <input type="file" name="moustache" />
-                <br>
+                <input type="file" name="glass" accept="image/*">
+                <input type="file" name="moustache" accept="image/*">
                 <input type="submit" />
             </form>
+            <p id="result"></p>
         </div>
     </body>
 </html>

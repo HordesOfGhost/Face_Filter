@@ -1,36 +1,73 @@
 from flask import Flask,render_template,Response,request
-from backend.record import Capture,generate_video,filtered_video
+from backend.record import Capture,generate_video
 from backend.process import preprocess
 import numpy as np
-import cv2
+import cv2,io,os,atexit
 from PIL import Image
+from flask_wtf import FlaskForm
+from wtforms import MultipleFileField
+from flask_uploads import configure_uploads, IMAGES, UploadSet
 
 app=Flask(__name__)
 
+app.config['UPLOADED_IMAGES_DEST'] = 'images'
+app.config['SECRET_KEY']='adadad1212'
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-app = Flask(__name__)
+images = UploadSet('images', IMAGES)
+configure_uploads(app, images)
+ 
 
 
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method=="POST":
+        #Read Glass Filter
+        for upload in request.files.getlist("glass"):
+            glass=np.array(bytearray(upload.read()),dtype=np.uint8)
+        #Read Moustache Filter
+        for upload in request.files.getlist("moustache"):
+            moustache=np.array(bytearray(upload.read()),dtype=np.uint8)
+        
+        #Preprocess
+        glass=preprocess(glass)
+        moustache=preprocess(moustache)
+        
+        #Save
+        try:
+            cv2.imwrite('images/glass.jpg',glass)
+        except:
+            pass
+        try:
+            cv2.imwrite('images/moustache.jpg',moustache)
+        except:
+            pass
     return render_template('index.html')
 
-@app.route('/video',methods=['GET','POST'])
+@app.route('/video')
 def video():
-    return Response(generate_video(Capture()),mimetype='multipart/x-mixed-replace;boundary=frame')
+    try:
+        glass=cv2.imread('images/glass.jpg')
+        moustache=cv2.imread('images/moustache.jpg')
+    except:
+        glass=None
+        moustache=None
+    return Response(generate_video(Capture(),glass=glass,moustache=moustache),mimetype='multipart/x-mixed-replace;boundary=frame')
 
-@app.route('/',methods=['POST'])
-def filter():
-    if request.method == 'POST':
-        for upload in request.files.getlist("glass") and request.files.getlist("glass"):
-            glass_array=np.array(bytearray(upload.read()),dtype=np.uint8)
-        for upload in request.files.getlist("moustache"):
-            moustache_array=np.array(bytearray(upload.read()),dtype=np.uint8)
-        glass=preprocess(glass_array)
-        moustache=preprocess(moustache_array)
-        return Response(filtered_video(Capture(),glass=glass,moustache=moustache),mimetype='multipart/x-mixed-replace;boundary=frame')
-    return 'not submitted'   
+#On exit delete all filter
+def OnExitApp():
+    try:
+        os.remove('images/glass.jpg')
+    except:
+        pass
+    try:
+        os.remove('images/moustache.jpg')
+    except:
+        pass
 
+atexit.register(OnExitApp)
 
 if __name__=="__main__":
+    
     app.run(host='0.0.0.0',port=5050,debug=True)

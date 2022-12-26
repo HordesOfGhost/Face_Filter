@@ -22,12 +22,18 @@ class Capture():
         self.jaw_start,self.jaw_end=face_utils.FACIAL_LANDMARKS_IDXS['jaw']
         self.righteyebrow_start,self.righteyebrow_end = face_utils.FACIAL_LANDMARKS_IDXS['right_eyebrow']
         
+    def __del__(self):
+        self.video.release()
+        
     
     def get_frame(self):
         ret,frame= self.video.read()
+        frame=cv2.resize(frame,(640,480))
         frame=cv2.flip(frame,180)
         ret,jpg=cv2.imencode('.jpg',frame)
         return jpg.tobytes()
+    
+    
     
     def filter(self,glass=None,moustache=None):
         #for computation handling
@@ -88,7 +94,10 @@ class Capture():
                     moustache=cv2.resize(moustache,(moustache_dist_x,moustache_dist_y))
                     roi_m=frame[moustache_up:moustache_down,moustache_right:moustache_left]
                     img2gray=cv2.cvtColor(moustache,cv2.COLOR_BGR2GRAY)
-                    _,mask=cv2.threshold(img2gray,25,255,cv2.THRESH_BINARY_INV)
+                    if moustache[0][0][0] > 200:
+                        _,mask=cv2.threshold(img2gray,0,255,cv2.THRESH_BINARY_INV)
+                    else:
+                        _,mask=cv2.threshold(img2gray,0,255,cv2.THRESH_BINARY)
                     mask_inv=cv2.bitwise_not(mask)
                     frame_bg_m=cv2.bitwise_and(roi_m,roi_m,mask=mask_inv)
                     moustache_fg=cv2.bitwise_and(moustache,moustache,mask=mask)
@@ -101,16 +110,10 @@ class Capture():
     
         
 
-def generate_video(camera):
-    while True:
-        frame=camera.get_frame()
-        
-        yield(b'--frame\r\n'
-            b'Content-Type: image/jpeg\r\n\r\n'+frame+b'\r\n')
-
-def filtered_video(camera,glass=None,moustache=None):
+def generate_video(camera,glass=None,moustache=None):
     while True:
         frame=camera.filter(glass=glass,moustache=moustache)
         
         yield(b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n'+frame+b'\r\n')
+
