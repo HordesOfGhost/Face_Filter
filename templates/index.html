@@ -1,20 +1,52 @@
 <!DOCTYPE html>
 
 <html>
-    <body>
+    <head>
+        <title>Filter</title>
+        <link rel="stylesheet" href="/static/style/design.css">
+        <script>
+            function loader(frame) {
+                const main = document.getElementById('loading');
+                const div = document.getElementById(frame);
+                const clone = div.cloneNode(true);
+
+                while (main.firstChild) main.firstChild.remove();
+
+                    main.appendChild(clone);
+            }
+        </script>
+    
+    </head>
+    <body id="bd" onload="loader('video')">
         <center><h1>Filters</h1></center>
-        <div>
-            <center>
-                <img src="{{url_for('video')}}" width="35%"/>
-            </center>
-        </div>
+        <center>
+            <div id="loading">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+        </center>
+        <div  style="display:none;">
+            <div id="video">
+                <img  src="{{url_for('video')}}" class="destory" idth=35%% />
+            </div>
+        </div> 
+        <br>
+        <br>
         <div>
             <form method='POST' onsubmit=submit() enctype="multipart/form-data">
                 <input type="file" name="glass" accept="image/*">
                 <input type="file" name="moustache" accept="image/*">
                 <input type="submit" />
             </form>
-            <p id="result"></p>
+            <p id="print"></p>
         </div>
     </body>
 </html>

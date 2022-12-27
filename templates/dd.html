@@ -1,0 +1,33 @@
+ <script>
+      function swapContent(id) {
+            const main = document.getElementById('main_place');
+            const div = document.getElementById(id);
+            const clone = div.cloneNode(true);
+
+            while (main.firstChild) main.firstChild.remove();
+
+            main.appendChild(clone);
+        }
+    </script>
+ 
+ <div id="main_place">
+        main
+    </div>
+
+    <button onclick="swapContent('operation1')">Replace to operation 1</button>
+    <button onclick="swapContent('operation2')">Replace to operation 2</button>
+    <button onclick="swapContent('operation3')">Replace to operation 3</button>
+
+    <div id="complete" style="display:none;">
+        <div id="operation1">
+            Some textboxes and text
+        </div>
+
+        <div id="operation2">
+            Again some textboxes and text
+        </div>
+
+        <div id="operation3">
+            And again some textboxes and text
+        </div>
+    </div>

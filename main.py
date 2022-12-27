@@ -11,7 +11,6 @@ from flask_uploads import configure_uploads, IMAGES, UploadSet
 app=Flask(__name__)
 
 app.config['UPLOADED_IMAGES_DEST'] = 'images'
-app.config['SECRET_KEY']='adadad1212'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 images = UploadSet('images', IMAGES)
@@ -36,11 +35,11 @@ def index():
         
         #Save
         try:
-            cv2.imwrite('images/glass.jpg',glass)
+            cv2.imwrite('filter_images/glass.jpg',glass)
         except:
             pass
         try:
-            cv2.imwrite('images/moustache.jpg',moustache)
+            cv2.imwrite('filter_images/moustache.jpg',moustache)
         except:
             pass
     return render_template('index.html')
@@ -48,8 +47,8 @@ def index():
 @app.route('/video')
 def video():
     try:
-        glass=cv2.imread('images/glass.jpg')
-        moustache=cv2.imread('images/moustache.jpg')
+        glass=cv2.imread('filter_images/glass.jpg')
+        moustache=cv2.imread('filter_images/moustache.jpg')
     except:
         glass=None
         moustache=None
@@ -58,11 +57,11 @@ def video():
 #On exit delete all filter
 def OnExitApp():
     try:
-        os.remove('images/glass.jpg')
+        os.remove('filter_images/glass.jpg')
     except:
         pass
     try:
-        os.remove('images/moustache.jpg')
+        os.remove('filter_images/moustache.jpg')
     except:
         pass
 
