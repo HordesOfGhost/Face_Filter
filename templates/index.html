@@ -41,12 +41,22 @@
         <br>
         <br>
         <div>
-            <form method='POST' onsubmit=submit() enctype="multipart/form-data">
-                <input type="file" name="glass" accept="image/*">
-                <input type="file" name="moustache" accept="image/*">
+            <form method='POST' enctype="multipart/form-data">
+                <input type="file" id="glass" name="glass" accept="image" />
+                
+                <input type="file" name="moustache" accept="image" />
+             
+                <br>
                 <input type="submit" />
             </form>
+            <a href='/remove_glass/'>
+                <button name="Capture">Remove Glass</button>
+            </a>
+            <a href='/remove_moustache/'>
+                <button name="Capture">Remove Moustache</button>
+            </a>
             <p id="print"></p>
         </div>
+       
     </body>
 </html>

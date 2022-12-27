@@ -1,10 +1,6 @@
 body{
-    background: linear-gradient(to right, #6889FF, #C668FF);
-    height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
+    background : url(/static/bg.jpg);
+  }
     
 #video {
     box-shadow: 0 4px 8px rgb(66, 67, 67), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

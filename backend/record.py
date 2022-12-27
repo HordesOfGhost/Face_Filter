@@ -10,7 +10,6 @@ camera=cv2.VideoCapture(0)
 class Capture():
     def __init__(self):
         self.video=cv2.VideoCapture(0)
-
         self.path=os.path.dirname(os.path.realpath(__file__))
         self.path=self.path.replace('\\','/')
         
@@ -24,18 +23,8 @@ class Capture():
         
     def __del__(self):
         self.video.release()
-        
     
-    def get_frame(self):
-        ret,frame= self.video.read()
-        frame=cv2.resize(frame,(640,480))
-        frame=cv2.flip(frame,180)
-        ret,jpg=cv2.imencode('.jpg',frame)
-        return jpg.tobytes()
-    
-    
-    
-    def filter(self,glass=None,moustache=None):
+    def filter(self,glass=None,moustache=None,save=0):
         #for computation handling
         ret,frame= self.video.read()
         frame=cv2.resize(frame,(640,480))
@@ -104,6 +93,9 @@ class Capture():
                     roi_m=cv2.add(frame_bg_m,moustache_fg)
                     roi_m=cv2.add(frame_bg_m,moustache_fg)
                     frame[moustache_up:moustache_down,moustache_right:moustache_left]=roi_m
+            
+        def SaveImage(self):
+            cv2.imwrite("img.jpg",frame)
             
         ret,jpg=cv2.imencode('.jpg',frame)
         return jpg.tobytes()

@@ -1,23 +1,12 @@
-from flask import Flask,render_template,Response,request
+from flask import Flask,render_template,Response,request,redirect
 from backend.record import Capture,generate_video
-from backend.process import preprocess
+from backend.pre_process import preprocess
 import numpy as np
 import cv2,io,os,atexit
 from PIL import Image
-from flask_wtf import FlaskForm
-from wtforms import MultipleFileField
-from flask_uploads import configure_uploads, IMAGES, UploadSet
 
 app=Flask(__name__)
-
-app.config['UPLOADED_IMAGES_DEST'] = 'images'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-
-images = UploadSet('images', IMAGES)
-configure_uploads(app, images)
- 
-
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -35,11 +24,11 @@ def index():
         
         #Save
         try:
-            cv2.imwrite('filter_images/glass.jpg',glass)
+            cv2.imwrite('backend/temp_images/glass.jpg',glass)
         except:
             pass
         try:
-            cv2.imwrite('filter_images/moustache.jpg',moustache)
+            cv2.imwrite('backend/temp_images/moustache.jpg',moustache)
         except:
             pass
     return render_template('index.html')
@@ -47,25 +36,36 @@ def index():
 @app.route('/video')
 def video():
     try:
-        glass=cv2.imread('filter_images/glass.jpg')
-        moustache=cv2.imread('filter_images/moustache.jpg')
+        glass=cv2.imread('backend/temp_images/glass.jpg')
+        moustache=cv2.imread('backend/temp_images/moustache.jpg')
     except:
         glass=None
         moustache=None
     return Response(generate_video(Capture(),glass=glass,moustache=moustache),mimetype='multipart/x-mixed-replace;boundary=frame')
 
+@app.route('/remove_glass/')
+def Remove_Glass():
+    os.remove('backend/temp_images/glass.jpg')
+    return redirect('/')
+
+@app.route('/remove_moustache/')
+def Remove_Moustache():
+    os.remove('backend/temp_images/moustache.jpg')
+    return redirect('/')
+
 #On exit delete all filter
 def OnExitApp():
     try:
-        os.remove('filter_images/glass.jpg')
+        os.remove('backend/temp_images/glass.jpg')
     except:
         pass
     try:
-        os.remove('filter_images/moustache.jpg')
+        os.remove('backend/temp_images/moustache.jpg')
     except:
         pass
 
 atexit.register(OnExitApp)
+
 
 if __name__=="__main__":
     
