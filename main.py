@@ -45,12 +45,29 @@ def video():
 
 @app.route('/remove_glass/')
 def Remove_Glass():
-    os.remove('backend/temp_images/glass.jpg')
+    try:
+        os.remove('backend/temp_images/glass.jpg')
+    except:
+        pass
     return redirect('/')
 
 @app.route('/remove_moustache/')
 def Remove_Moustache():
-    os.remove('backend/temp_images/moustache.jpg')
+    try:
+        os.remove('backend/temp_images/moustache.jpg')
+    except:
+        pass
+    return redirect('/')
+@app.route('/remove_all/')
+def Remove_all():
+    try:
+        os.remove('backend/temp_images/glass.jpg')
+    except:
+        pass
+    try:
+        os.remove('backend/temp_images/moustache.jpg')
+    except:
+        pass
     return redirect('/')
 
 #On exit delete all filter

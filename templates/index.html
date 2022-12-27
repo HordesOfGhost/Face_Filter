@@ -5,6 +5,7 @@
         <title>Filter</title>
         <link rel="stylesheet" href="/static/style/design.css">
         <script>
+            // to replace div elements
             function loader(frame) {
                 const main = document.getElementById('loading');
                 const div = document.getElementById(frame);
@@ -15,10 +16,11 @@
                     main.appendChild(clone);
             }
         </script>
-    
     </head>
-    <body id="bd" onload="loader('video')">
-        <center><h1>Filters</h1></center>
+    <body onload="loader('video')">
+        <center id="tt">
+           Filters
+        </center>
         <center>
             <div id="loading">
                 <div class="wave"></div>
@@ -40,22 +42,26 @@
         </div> 
         <br>
         <br>
-        <div>
+        <div class="form">
             <form method='POST' enctype="multipart/form-data">
-                <input type="file" id="glass" name="glass" accept="image" />
-                
-                <input type="file" name="moustache" accept="image" />
-             
-                <br>
-                <input type="submit" />
+                    <input type="file" id="glass" name="glass" accept="image" />
+                    <label for="glass">Select Shades</label>
+                    <input type="file" id="moustache" name="moustache" accept="image" />
+                    <label for="moustache">Select Moustache</label>
+                <button class="submit-btn">Apply</button>
             </form>
+        </div>
+        <div class="form">
+            
             <a href='/remove_glass/'>
-                <button name="Capture">Remove Glass</button>
+                <button name="Capture">Remove Shades</button>
             </a>
             <a href='/remove_moustache/'>
                 <button name="Capture">Remove Moustache</button>
             </a>
-            <p id="print"></p>
+            <a href='/remove_all/'>
+                <button name="Capture">Remove All</button>
+            </a>
         </div>
        
     </body>
