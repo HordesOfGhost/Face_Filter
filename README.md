@@ -2,9 +2,9 @@
 Face Filters using DLIB and Flask.
 
 Note:
-Image's size preffered: 1920 X 1080
-If the filter is color other than 'black' background color must be 'black'.
-If the filter is 'black' in color background color must be 'white'.
+Image's size preffered: 1920 X 1080.<br>
+If the filter is color other than 'black' background color must be 'black'.<br>
+If the filter is 'black' in color background color must be 'white'.<br>
 
 Demo:
 
