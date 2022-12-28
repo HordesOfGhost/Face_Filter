@@ -53,7 +53,7 @@ class Capture():
             
             #glass filter
             if not glass is None:
-                if glass_left<=1280 and glass_left>=0 and glass_right>=0 and glass_right<1280 and glass_up<=720 and glass_down<=720 and glass_up>=0 and glass_down>=0:
+                if glass_left<=640 and glass_left>=0 and glass_right>=0 and glass_right<640 and glass_up<=480 and glass_down<=480 and glass_up>=0 and glass_down>=0:
                     glass=cv2.resize(glass,(glass_dist_x,glass_dist_y))
                     roi=frame[glass_up:glass_down,glass_right:glass_left]
                     img2gray=cv2.cvtColor(glass,cv2.COLOR_BGR2GRAY)
@@ -79,7 +79,7 @@ class Capture():
             
             #moustache filter
             if not moustache is None:    
-                if moustache_left<=1280 and moustache_left>=0 and moustache_right>=0 and moustache_right<1280 and moustache_up<=720 and moustache_down<=720 and moustache_up>=0 and moustache_down>=0:
+                if moustache_left<=640 and moustache_left>=0 and moustache_right>=0 and moustache_right<640 and moustache_up<=480 and moustache_down<=480 and moustache_up>=0 and moustache_down>=0:
                     moustache=cv2.resize(moustache,(moustache_dist_x,moustache_dist_y))
                     roi_m=frame[moustache_up:moustache_down,moustache_right:moustache_left]
                     img2gray=cv2.cvtColor(moustache,cv2.COLOR_BGR2GRAY)
