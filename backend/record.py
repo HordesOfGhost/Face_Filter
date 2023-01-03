@@ -97,7 +97,8 @@ class Capture():
             
         if save is not None:
             now_time=datetime.now()
-            cv2.imwrite(f"{now_time}",frame)
+            current_time = now_time.strftime("%d_%m_%Y_%H_%M_%S")
+            cv2.imwrite(f'saved_snaps/{current_time}.jpg',frame)
             save=None
             
         ret,jpg=cv2.imencode('.jpg',frame)
