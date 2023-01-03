@@ -1,5 +1,5 @@
 import cv2
-import time
+from datetime import datetime
 import dlib
 from imutils import face_utils
 import numpy as np
@@ -96,7 +96,8 @@ class Capture():
                     frame[moustache_up:moustache_down,moustache_right:moustache_left]=roi_m
             
         if save is not None:
-            cv2.imwrite("img.jpg",frame)
+            now_time=datetime.now()
+            cv2.imwrite(f"{now_time}",frame)
             save=None
             
         ret,jpg=cv2.imencode('.jpg',frame)
