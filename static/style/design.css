@@ -162,3 +162,7 @@ button:active,label:active {
   gap:4px;
   padding:5px;
 } 
+
+img{
+  background-size: cover;
+}

@@ -13,6 +13,7 @@ class Capture():
         self.path=os.path.dirname(os.path.realpath(__file__))
         self.path=self.path.replace('\\','/')
         
+        
         #face detector and landmarks
         self.face_detecter=dlib.get_frontal_face_detector()
         self.face_landmark=dlib.shape_predictor(f'{self.path}/model/shape_predictor_68_face_landmarks.dat')
@@ -24,7 +25,7 @@ class Capture():
     def __del__(self):
         self.video.release()
     
-    def filter(self,glass=None,moustache=None,save=0):
+    def filter(self,glass=None,moustache=None,save=None):
         #for computation handling
         ret,frame= self.video.read()
         frame=cv2.resize(frame,(640,480))
@@ -94,18 +95,21 @@ class Capture():
                     roi_m=cv2.add(frame_bg_m,moustache_fg)
                     frame[moustache_up:moustache_down,moustache_right:moustache_left]=roi_m
             
-        def SaveImage(self):
+        if save is not None:
             cv2.imwrite("img.jpg",frame)
+            save=None
             
         ret,jpg=cv2.imencode('.jpg',frame)
         return jpg.tobytes()
     
         
 
-def generate_video(camera,glass=None,moustache=None):
+def generate_video(camera,glass=None,moustache=None,save=None):
     while True:
-        frame=camera.filter(glass=glass,moustache=moustache)
+        frame=camera.filter(glass=glass,moustache=moustache,save=save)
         
         yield(b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n'+frame+b'\r\n')
 
+def save_image():
+    pass

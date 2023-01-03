@@ -1,5 +1,5 @@
 from flask import Flask,render_template,Response,request,redirect
-from backend.record import Capture,generate_video
+from backend.record import Capture,generate_video,save_image
 from backend.pre_process import preprocess
 import numpy as np
 import cv2,io,os,atexit
@@ -41,7 +41,7 @@ def video():
     except:
         glass=None
         moustache=None
-    return Response(generate_video(Capture(),glass=glass,moustache=moustache),mimetype='multipart/x-mixed-replace;boundary=frame')
+    return Response(generate_video(Capture(),glass=glass,moustache=moustache,save=None),mimetype='multipart/x-mixed-replace;boundary=frame')
 
 @app.route('/remove_glass/')
 def Remove_Glass():
@@ -58,6 +58,7 @@ def Remove_Moustache():
     except:
         pass
     return redirect('/')
+
 @app.route('/remove_all/')
 def Remove_all():
     try:
@@ -68,6 +69,19 @@ def Remove_all():
         os.remove('backend/temp_images/moustache.jpg')
     except:
         pass
+    return redirect('/')
+
+@app.route('/snapshot/')
+def Snapshot():
+    try:
+        glass=cv2.imread('backend/temp_images/glass.jpg')
+        moustache=cv2.imread('backend/temp_images/moustache.jpg')
+    except:
+        glass=None
+        moustache=None
+    #To Capture
+    Capture().filter(glass=glass,moustache=moustache,save=1)
+   
     return redirect('/')
 
 #On exit delete all filter
