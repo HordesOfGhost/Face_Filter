@@ -44,7 +44,7 @@ def video():
     return Response(generate_video(Capture(),glass=glass,moustache=moustache,save=None),mimetype='multipart/x-mixed-replace;boundary=frame')
 
 @app.route('/remove_glass/')
-def Remove_Glass():
+def remove_glass():
     try:
         os.remove('backend/temp_images/glass.jpg')
     except:
@@ -52,7 +52,7 @@ def Remove_Glass():
     return redirect('/')
 
 @app.route('/remove_moustache/')
-def Remove_Moustache():
+def remove_moustache():
     try:
         os.remove('backend/temp_images/moustache.jpg')
     except:
@@ -60,7 +60,7 @@ def Remove_Moustache():
     return redirect('/')
 
 @app.route('/remove_all/')
-def Remove_all():
+def remove_all():
     try:
         os.remove('backend/temp_images/glass.jpg')
     except:
@@ -72,7 +72,7 @@ def Remove_all():
     return redirect('/')
 
 @app.route('/snapshot/')
-def Snapshot():
+def snapshot():
     try:
         glass=cv2.imread('backend/temp_images/glass.jpg')
         moustache=cv2.imread('backend/temp_images/moustache.jpg')
@@ -85,7 +85,7 @@ def Snapshot():
     return redirect('/')
 
 #On exit delete all filter
-def OnExitApp():
+def on_exit_app():
     try:
         os.remove('backend/temp_images/glass.jpg')
     except:
@@ -95,7 +95,7 @@ def OnExitApp():
     except:
         pass
 
-atexit.register(OnExitApp)
+atexit.register(on_exit_app)
 
 
 if __name__=="__main__":
