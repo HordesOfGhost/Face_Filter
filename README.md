@@ -1,5 +1,5 @@
 # Face_Filter
-Face Filters using DLIB and Flask.
+Face Filters that pastes Shades and Moustache on Detected Face using DLIB. My first project in Computer Vision.
 
 Note:<br>
 Image's size preffered: 1920 X 1080.<br>
